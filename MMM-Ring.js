@@ -75,7 +75,18 @@ Module.register("MMM-Ring", {
       this.hls = null;
     }
 
-    var wrapper = document.createElement("div");
+      var wrapper = document.createElement("div");
+
+      if (this.snapshot) {
+	  Log.info('PRINTING SNAPSHOT!!!')
+	  var img = document.createElement('img')
+	  img.src = 'data:image/jpeg;base64, ' + this.snapshot;
+	  //img.width = '200px';
+	  img.style = 'width: 300px;';
+	  wrapper.appendChild(img);
+
+	  return wrapper;
+      }
 
     switch (this.displayType) {
       case this.DisplayTypes.NONE:
@@ -149,6 +160,10 @@ Module.register("MMM-Ring", {
         this.displayType = this.DisplayTypes.VIDEO;
         this.updateDom();
         break;
+    case 'SNAPSHOT':
+	this.snapshot = payload;
+	this.updateDom()
+	break;
     }
   }
 });

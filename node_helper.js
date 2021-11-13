@@ -146,7 +146,14 @@ module.exports = NodeHelper.create({
     }
 
     // Start listening for doorbell presses on each camera
-    allCameras.forEach((camera) => {
+      allCameras.forEach((camera) => {
+	  this.toLog('Found camera: ' + camera.name)
+	  if (camera.name == 'Front') {
+	      this.getSnapshot(camera);
+	      var self = this;
+	      setInterval(function () { self.getSnapshot(camera); }, 30000);
+	      //this.startMonitor(camera)
+	  }
       camera.onDoorbellPressed.subscribe(async () => {
         if (!this.sipSession) {
           await this.startSession(camera, "ring");
@@ -169,6 +176,17 @@ module.exports = NodeHelper.create({
 
     
   },
+
+    getSnapshot: async function (camera) {
+	this.toLog('Fetching snapshot')
+	var buffer = await camera.getSnapshot()
+	this.toLog('Sending snapshot..')
+	this.sendSocketNotification('SNAPSHOT', buffer.toString('base64'))
+    },
+    
+    startMonitor: async function (camera) {
+	
+    },
 
   startSession: async function (camera, type) {
     if (this.sipSession || this.sessionRunning === true) {
