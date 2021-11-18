@@ -79,11 +79,18 @@ Module.register("MMM-Ring", {
 
       if (this.snapshot) {
 	  Log.info('PRINTING SNAPSHOT!!!')
+    /*
 	  var img = document.createElement('img')
 	  img.src = 'data:image/jpeg;base64, ' + this.snapshot;
 	  //img.width = '200px';
 	  img.style = 'width: 300px;';
-	  wrapper.appendChild(img);
+    */
+    const imgWrapper = document.createElement('div')
+    imgWrapper.className = 'image-wrapper'
+    imgWrapper.style = 'background-size: 400px; background-image: url("data:image/jpeg;base64, ' + this.snapshot + '"); width: 400px; height: 240px;';    
+    //imgWrapper.appendChild(img)
+
+	  wrapper.appendChild(imgWrapper);
 
 	  return wrapper;
       }
